@@ -1,22 +1,59 @@
 import React, {useState, useContext} from "react";
-import { Card, CardBody, Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { useHistory } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 import { Redirect } from "react-router";
+import UserContext from "../UserContext";
+import Button from "react-bootstrap/Button";
+import JoblyApi from "../api/api";
+import Alert from "../common/Alert";
 
 
-function ProfileForm({updateUser}) {
-  const userContext = React.createContext()
-  const user = useContext(userContext);
+function ProfileForm() {
+  const history = useHistory();
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  console.log(currentUser);
  
   const INITIAL_STATE = {
     
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email}
+    firstName: currentUser.firstName,
+    lastName: currentUser.lastName,
+    email: currentUser.email,
+    username: currentUser.username,
+    };
 const [formData, setFormData] = useState(INITIAL_STATE);
- if(!user.username) {
+const [saveConfirmed, setSaveConfirmed] = useState(false);
+ if(!currentUser.username) {
     return <Redirect to="/login" />;
   }
 
+  async function handleSubmit(evt) {
+    evt.preventDefault();
+
+    let profileData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    let username = formData.username;
+    let updatedUser;
+
+    try {
+      updatedUser = await JoblyApi.saveProfile(username, profileData);
+      if (updatedUser.success) {
+        history.push("/companies");
+      }    
+    } catch (errors) {
+      return;
+    }
+
+    setFormData(f => ({ ...f, password: "" }));
+    setSaveConfirmed(true);
+
+    // trigger reloading of user information throughout the site
+    setCurrentUser(updatedUser);
+  }
 
 const handleChange = (event) => {
     const {name, value} = event.target;
@@ -24,52 +61,64 @@ const handleChange = (event) => {
         ...formData,
         [name]: value
     }))};
- async function handleSubmit(event){
-     
-    event.preventDefault();
-    updateUser(user.username, formData);  
-    setFormData(INITIAL_STATE )
-    return <Redirect to="/" push />     
-    
-  
-}
-
-
-
-
-
-
 
 
   return (
-    <section className="col-md-8">
-      <Card>
-        <CardBody className="text-center">
-        <Form onSubmit={handleSubmit}>
-        <FormGroup>
-        <Label>Username: </Label>
-        {/* <Input type="text" name="username" id="username" placeholder="Username" onChange={handleChange} value={user.username}/> */}
-        <p class="form-control-plaintext">{user.username}</p>
-      </FormGroup>
-        <FormGroup>
-        <Label for="firstName">First Name: </Label>
-        <Input type="text" name="firstName" id="firstName" placeholder="First Name" onChange={handleChange} value={formData.firstName}/>
-      </FormGroup>
-      <FormGroup>
-        <Label for="lastName">Last Name: </Label>
-        <Input type="text" name="lastName" id="lastName" placeholder="Last Name" onChange={handleChange} value={formData.lastName} />
-      </FormGroup>     
-      <FormGroup>
-        <Label for="email">Email: </Label>
-        <Input type="email" name="email" id="email" placeholder="E-mail" onChange={handleChange} value={formData.email} />
-      </FormGroup>
-    
-      
-      <Button>Submit</Button>
-    </Form>
-        </CardBody>
-      </Card>
-    </section>
+    <div class="form-group">
+      <div>
+        <h1>Edit Your Profile</h1>
+      </div>
+
+      <Form onSubmit={handleSubmit}>
+        
+        <Form.Group className="ml-3">
+          <Form.Label >Username</Form.Label>
+          <p class="form-control-plaintext">{currentUser.username}</p>
+
+          <Form.Label>Firstname</Form.Label>
+          <Form.Control
+            type="firstName"
+            name="firstName"
+            id="firstName"
+            value={formData.firstName}
+            placeholder="First Name"
+            onChange={handleChange}
+          />
+
+          <Form.Label>Lastname</Form.Label>
+          <Form.Control
+            type="lastName"
+            name="lastName"
+            id="lastName"
+            value={formData.lastName}
+            placeholder="Last Name"
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="ml-3">
+          <Form.Label className="label">Email</Form.Label>
+          <Form.Control
+            type="email"
+            name="email"
+            id="email"
+            value={formData.email}
+            placeholder="Email"
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        {saveConfirmed
+                  ?
+                  <Alert type="success" messages={["Updated successfully."]} />
+                  : null}
+
+        <br></br>
+        <Button block="true" size="lg" type="submit">
+          Submit
+        </Button>
+      </Form>
+    </div>
   );
 }
 

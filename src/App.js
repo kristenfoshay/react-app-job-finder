@@ -9,31 +9,12 @@ import useLocalStorage from "./useLocalStorage";
 import UserContext from "./UserContext";
 import LoadingSpinner from "./common/LoadingSpinner";
 
-//import UserContext from "./UserContext";
 
 function App() {
   const [infoLoaded, setInfoLoaded] = useState(false);
-  //const [applicationIds, setApplicationIds] = useState(new Set([]));
-  //const [isLoading, setIsLoading] = useState(true);
-  //const [companies, setCompanies] = useState([]);
-  //const [jobs, setJobs] = useState([]);
-  //const [user, setUser] = useLocalStorage("user", "");
   const [token, setToken] = useLocalStorage("token", "");
   const [currentUser, setCurrentUser] = useState(null);
-  // const [applied, setApplied] = useState([]);
 
-  // useEffect(() => {
-  //   async function getCompaniesAndJobs() {
-     
-  //     let companies = await JoblyApi.getCompanies();
-  //     let jobs = await JoblyApi.getJobs();
-
-  //     setCompanies(companies);
-  //     setJobs(jobs);
-  //     //setIsLoading(false);
-  //   }
-  //   getCompaniesAndJobs();
-  // }, []);
 
   useEffect(function loadUserInfo() {
     console.debug("App useEffect loadUserInfo", "token=", token);
@@ -42,11 +23,10 @@ function App() {
       if (token) {
         try {
           let { username } = jwt.decode(token);
-          // put the token on the Api class so it can use it to call the API.
           JoblyApi.token = token;
           let currentUser = await JoblyApi.getCurrentUser(username);
           setCurrentUser(currentUser);
-          //setApplicationIds(new Set(currentUser.applications));
+    
         } catch (err) {
           console.error("App loadUserInfo: problem loading", err);
           setCurrentUser(null);
@@ -94,13 +74,6 @@ function App() {
     setCurrentUser(null);
     
   }
-
-  // async function updateUser(name, data) {
-  //   //setIsLoading(true);
-  //   let user = await JoblyApi.updateUser(name, data);
-  //   setUser(user);
-  //   //setIsLoading(false);
-  // }
 
   if (!infoLoaded) return <LoadingSpinner />;
 

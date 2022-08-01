@@ -52,7 +52,7 @@ function SignupForm({signup}) {
 
 
       <Form onSubmit={handleSubmit}>
-        {/* Labels and inputs for form data */}
+        
         <Form.Group className="ml-3">
           <Form.Label >Username</Form.Label>
           <Form.Control

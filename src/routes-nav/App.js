@@ -24,9 +24,9 @@ class App extends Component {
     }
 
     this.login = this.login.bind(this);
-    this.logOut = this.logOut.bind(this);
-    this.Signup = this.Signup.bind(this);
-    //this.updateUser = this.updateUser.bind(this);
+    this.logout = this.logout.bind(this);
+    this.signup = this.signup.bind(this);
+    this.updateuser = this.updateuser.bind(this);
   }
 
   //call login to get rid of duplicate code
@@ -61,10 +61,8 @@ class App extends Component {
     this.setState({ currUser: null });
   }
 
-  async updateUser() {
-    let currUser = await this.getUser();
-    this.setState({ currUser });
-  }
+  
+ 
 
   async getUser() {
     try {
@@ -86,10 +84,10 @@ class App extends Component {
             <BrowserRouter>
               <NavBar/>
               <Routes
-                loginUser={this.login}
-                logOutUser={this.logOut}
-                SignUpUser={this.Signup}
-                updateUserDetails={this.updateUser} />
+                login={this.login}
+                logout={this.logOut}
+                signup={this.Signup}
+                updateuser={this.Updateuser} />
             </BrowserRouter>
           {/* </UserContext.Provider> */}
         </div>
