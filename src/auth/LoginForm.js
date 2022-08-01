@@ -1,12 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
 
 function LoginForm({ login }) {
-  const userContext = React.createContext()
-  const user = useContext(userContext);
+  const history = useHistory();
 
   const INITIAL_STATE = {
     username: "",
@@ -26,19 +25,20 @@ function LoginForm({ login }) {
 
 
   async function handleSubmit(event) {
-
+ 
     event.preventDefault();
-    login(formData);
+    let result = await login(formData);
     setFormData(INITIAL_STATE)
-
+    if (result.success) {
+      history.push("/companies");
+    }
 
 
   }
 
   return (
     <div className="Login">
-      { user  ? 
-             <Redirect to={"/"}/> :
+   
       <Form onSubmit={handleSubmit}>
         <Form.Group size="lg" controlId="username">
           <Form.Label>Username</Form.Label>
@@ -66,7 +66,7 @@ function LoginForm({ login }) {
           Login
         </Button>
       </Form>
-}
+
     </div>
   );
 }
