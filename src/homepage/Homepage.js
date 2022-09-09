@@ -3,10 +3,8 @@ import Button from "react-bootstrap/Button";
 
 
 class Homepage extends Component {
-  //static contextType = UserContext;
 
   render() {
-    //const currUser = this.context;
     return (
       <div>
         <h1>Jobly</h1>

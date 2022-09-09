@@ -8,8 +8,6 @@ import JoblyApi from "./api/api";
 import useLocalStorage from "./hooks/LocalStorage";
 import userContext from "./UserContext";
 
-//import UserContext from "./UserContext";
-
 const [user, setUser] = useLocalStorage("user", "");
 const [token, setToken] = useLocalStorage("token", "");
 
@@ -19,7 +17,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-      //currUser: null,
       loading: true
     }
 
@@ -29,14 +26,10 @@ class App extends Component {
     this.updateuser = this.updateuser.bind(this);
   }
 
-  //call login to get rid of duplicate code
   async componentDidMount() {
     if (localStorage.token) {
-      //let currUser = await this.getUser();
-      //this.setState({ currUser, loading: false });
       this.setState({ loading: false });
     } else {
-      //this.setState({ currUser: null, loading: false });
       this.setState({ loading: false });
     }
   }
@@ -61,9 +54,6 @@ class App extends Component {
     this.setState({ currUser: null });
   }
 
-  
- 
-
   async getUser() {
     try {
       let user = (await jwt.decode(localStorage.token)).username;
@@ -80,7 +70,6 @@ class App extends Component {
     } else {
       return (
         <div className="App">
-          {/* <UserContext.Provider value={this.state.currUser}> */}
             <BrowserRouter>
               <NavBar/>
               <Routes
@@ -89,7 +78,6 @@ class App extends Component {
                 signup={this.Signup}
                 updateuser={this.Updateuser} />
             </BrowserRouter>
-          {/* </UserContext.Provider> */}
         </div>
       );
     }

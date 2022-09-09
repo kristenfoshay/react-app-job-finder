@@ -8,16 +8,6 @@ import LoginForm from "../auth/LoginForm";
 import ProfileForm from "../profiles/ProfileForm";
 import SignupForm from "../auth/SignupForm";
 
-//import PrivateRoute from "./PrivateRoute";
-
-/** Site-wide routes.
- *
- * Parts of site should only be visitable when logged in. Those routes are
- * wrapped by <PrivateRoute>, which is an authorization component.
- *
- * Visiting a non-existant route Navigates to the homepage.
- */
-
 function Routes({ login, signup }) {
 
   return (

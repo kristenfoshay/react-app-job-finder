@@ -1,16 +1,6 @@
 import React from "react";
 import JobCard from "./JobCard";
 
-/** Show list of job cards.
- *
- * Used by both JobList and Company to list jobs. Receives an apply
- * func prop which will be called by JobCard on apply.
- *
- * JobList -> JobCardList -> JobCard
- * Company -> JobCardList -> JobCard
- *
- */
-
 function JobCardList({ jobs, apply }) {
   console.debug("JobCardList", "jobs=", jobs);
 

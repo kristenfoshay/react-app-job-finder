@@ -22,18 +22,13 @@ function LoginForm({ login }) {
     }))
   };
 
-
-
   async function handleSubmit(event) {
- 
     event.preventDefault();
     let result = await login(formData);
     setFormData(INITIAL_STATE)
     if (result.success) {
       history.push("/companies");
     }
-
-
   }
 
   return (

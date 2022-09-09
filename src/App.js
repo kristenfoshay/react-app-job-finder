@@ -35,9 +35,6 @@ function App() {
       setInfoLoaded(true);
     }
 
-    // set infoLoaded to false while async getCurrentUser runs; once the
-    // data is fetched (or even if an error happens!), this will be set back
-    // to false to control the spinner.
     setInfoLoaded(false);
     getCurrentUser();
   }, [token]);
@@ -64,9 +61,6 @@ function App() {
     }
   }
   
-
-
-  //not clearing out local storage here with either method
   function logout(){
     
     console.log("logging out")

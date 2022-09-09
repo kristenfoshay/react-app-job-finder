@@ -50,8 +50,6 @@ const [saveConfirmed, setSaveConfirmed] = useState(false);
 
     setFormData(f => ({ ...f, password: "" }));
     setSaveConfirmed(true);
-
-    // trigger reloading of user information throughout the site
     setCurrentUser(updatedUser);
   }
 
